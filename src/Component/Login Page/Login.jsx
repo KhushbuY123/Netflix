@@ -1,44 +1,62 @@
-import React from 'react'
-import Header from './Header'
+import React, { useRef, useState } from 'react';
+import Header from './Header';
+import {checkValidate} from '../../utils/validate'
+// import { createUserWithEmailAndPassword } from "firebase/auth";
+// import {auth} from '../../utils/firebase'
+
 const Login = () => {
+
+   // In-page form changing.................
+  const[isSignInform,setisSignInform]=useState(true);
+
+  // Error message State variable...........
+  const[errormessage,seterrormessage]=useState(null)
+
+  // Setting sign-in and sign-up form.......
+  const toggleSignInform=()=>{
+      setisSignInform(!isSignInform);
+  }
+  // Refrences of inputs.....................
+  const email=useRef(null)
+  const password=useRef(null)
+  // const name=useRef(null)
+
+  // from-validation refrencing from util....
+  const handlesubmit=()=>{
+    const message=checkValidate(email.current.value,password.current.value)
+      seterrormessage(message) 
+  }
+
   return (
     <>
-    <div>
       <Header/>
-    </div>
-    <div className='absolute'>
-        <img src='https://assets.nflxext.com/ffe/siteui/vlv3/058eee37-6c24-403a-95bd-7d85d3260ae1/e10ba8a6-b96a-4308-bee4-76fab1ebd6ca/IN-en-20240422-POP_SIGNUP_TWO_WEEKS-perspective_WEB_db9348f2-4d68-4934-b495-6d9d1be5917e_small.jpg' alt='banner'/>
-    </div>
-    <div className='bg-black w-full absolute h-[400px] bg-opacity-65'>
-          <p className='text-white'>Questions? Call <p>000-800-919-1694</p></p>
-          <ul>
-            <li>FAQ</li>
-            <li>Cookie Preference</li>
-          </ul>
-          <ul>
-            <li>Help Center</li>
-            <li>Corporate Information</li>
-          </ul>
-          <ul>
-            <li>Terms of use</li>
-            <li>Privacy</li>
-          </ul>
-    </div>
-    <form className='p-12 bg-black bg-opacity-70 absolute w-4/12 my-32 mx-auto right-0 left-0 rounded-md'>
-      <p className='text-white font-bold text-3xl mb-8'>Sign In</p>
-      <input type='text' placeholder='email' className='p-4 m-2 rounded-sm'/>
-      <input type='text' placeholder='email' className='p-4 m-2 rounded-sm'/>
-      <button className='text-white font-semibold bg-red-600 hover:bg-red-700 p-2 m-4 w-52 rounded-sm' type='submit'>Sign In</button>
-      <p className='text-gray-400'>OR</p>
-      <button className='font-semibold text-white bg-gray-500 hover:bg-opacity-25 bg-opacity-40 p-2 m-4 w-52 rounded-sm' type='submit'>Use a sign-in code</button>
-      <p className='text-white hover:text-gray-400 hover:underline border-b-emerald-50'>Forgot Password ?</p>
-      <p className='text-white'>Remember me</p>
-      <span className='text-gray-400 mt-8'>New to Netflix ? <span className='hover:underline font-semibold text-white'>Sign-up now</span></span>
-      <p className='text-gray-400 text-xs mt-4 mb-14'>This page is protected by Google reCAPTCHA to ensure you're not a bot. <a className='text-blue-500 hover:underline' href='#'>Learn more.</a></p>
-    </form>
-    
+      <div className='relative h-screen'>
+        {/* bg-image */}
+        <img
+          src='https://assets.nflxext.com/ffe/siteui/vlv3/058eee37-6c24-403a-95bd-7d85d3260ae1/e10ba8a6-b96a-4308-bee4-76fab1ebd6ca/IN-en-20240422-POP_SIGNUP_TWO_WEEKS-perspective_WEB_db9348f2-4d68-4934-b495-6d9d1be5917e_small.jpg'
+          alt='banner'
+          className='object-cover w-full h-full absolute inset-0'
+        />
+         {/* form */}
+        <form className='bg-black bg-opacity-70 absolute w-4/5 md:w-4/12 my-32 mx-auto right-0 left-0 rounded-md p-8 md:p-12'>
+        <p className='text-white font-bold text-3xl mb-8'>{isSignInform?"Sign In":"Sign Up"}</p>
+        <input ref={email} type='text' placeholder='Email or mobile number' className='text-white bg-gray-900 bg-opacity-35 border border-white p-4 m-2 rounded-md w-full' />
+       {!isSignInform && <input type='text' placeholder='Name' className='text-white bg-gray-900 bg-opacity-35 border border-white p-4 m-2 rounded-md w-full' />}
+        <input ref={password} type='password' placeholder='Password' className='text-white bg-gray-900 bg-opacity-35 border border-white p-4 m-2 rounded-md w-full' />
+        <p className='text-red-500'>{errormessage}</p>
+        <button className='text-white font-semibold bg-red-600 hover:bg-red-700 p-2 m-4 w-full rounded-md' type='submit' onClick={handlesubmit} onSubmit={(e)=>{e.preventDefault()}}>{isSignInform?"Sing In":"Sign Up"}</button>
+        <p className='text-gray-400'>OR</p>
+        <button className='font-semibold text-white bg-gray-500 hover:bg-opacity-25 bg-opacity-40 p-2 m-4 w-full rounded-md' type='button'>Use a sign-in code</button>
+        <p className='text-white hover:text-gray-400 hover:underline border-b-emerald-50'>Forgot Password ?</p>
+        <div className='flex items-center'>
+          <input type='checkbox' className='mr-2' />
+          <p className='text-white'>Remember me</p>
+        </div>
+        <p className='text-gray-400 mt-8 cursor-pointer'>{isSignInform?"New to Netflix?":"Already Registered?"} <span className='hover:underline font-semibold text-white' onClick={toggleSignInform}>{isSignInform?"Sign-Up":"Sign-In"}</span></p>
+        <p className='text-gray-400 text-xs mt-4 mb-6'>This page is protected by Google reCAPTCHA to ensure you're not a bot. <a className='text-blue-500 hover:underline' href='#'>Learn more.</a></p>
+      </form>
+      </div> 
     </>
-  )
-}
-
-export default Login
+  );
+};
+export default Login;
