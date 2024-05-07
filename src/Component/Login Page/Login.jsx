@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Header from './Header';
 import {checkValidate} from '../../utils/validate'
+import { Banner_URL } from '../../utils/constant';
 // import { createUserWithEmailAndPassword } from "firebase/auth";
 // import {auth} from '../../utils/firebase'
 
@@ -31,12 +32,12 @@ const Login = () => {
     <>
       <Header/>
       <div className='relative h-screen'>
-        {/* bg-image */}
-        <img
-          src='https://assets.nflxext.com/ffe/siteui/vlv3/058eee37-6c24-403a-95bd-7d85d3260ae1/e10ba8a6-b96a-4308-bee4-76fab1ebd6ca/IN-en-20240422-POP_SIGNUP_TWO_WEEKS-perspective_WEB_db9348f2-4d68-4934-b495-6d9d1be5917e_small.jpg'
+        {/* bg-image */} <img
+          src={Banner_URL}
           alt='banner'
           className='object-cover w-full h-full absolute inset-0'
         />
+       
          {/* form */}
         <form className='bg-black bg-opacity-70 absolute w-4/5 md:w-4/12 my-32 mx-auto right-0 left-0 rounded-md p-8 md:p-12'>
         <p className='text-white font-bold text-3xl mb-8'>{isSignInform?"Sign In":"Sign Up"}</p>
